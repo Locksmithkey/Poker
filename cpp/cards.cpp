@@ -69,16 +69,6 @@ void cards::fileHandling(string cardFile) {
 
 	getline(file, cardData);
 
-	/*for(int i = 0; i < cardData.length(); i++) {
-		if(cardData[i] != ',' && cardData[i] != ' ')
-			card += cardData[i];
-
-		else if(card.length() >= 2) {
-			 hand.push_back(card);
-		}
-
-	} */
-
 	cout << cardData << endl;
 	cout << endl;
 
@@ -242,49 +232,3 @@ void cards::printHand(vector<string> h) {
 	for(int i = 0; i < h.size(); i++) 
 		i == 4 ? cout << h.at(i) << " | " : cout << h.at(i) << " ";
 }
-
-//RSF --SAME SUIT : CONSECUTIVE HIGH VALUE		5	5c
-//SF  --SAME SUIT : CONSECUTIVE LOW VALUE		5  	5c
-//FOK --FOUR OF SAME VALUE				X	4
-//
-//FS  --SAME SUIT : VALUE DNM				5	X
-//STR --SUIT DNM : CONSECUTIVE VALUE			x	5c
-//TOK --SUIT DNM : 3 OF SAME VALUE			x	3
-//TP  --SUIT DNM : 2 PAIRS OF SAME VALUES		x	22
-//PR  --SUIT DNM : 2 OF SAME VALUE			x	2
-//HC  --SUIT DNM : HIGHEST VALUE CARD IN HAND		x	1
-//
-//TIES
-//
-//SUIT RANKS LOWEST TO HIGHEST: D, C, H, S
-//
-//FLUSHES:
-//SUIT OF FLUSHES DETERMINE TIE BREAK 
-//
-//STRAIGHTS:
-//SUIT OF HIGHEST VALUE CARD
-//
-//FOUR OF A KIND:
-//SUIT OF KICKER CARD
-//KICKER IS CARD NOT ONE OF THE FOUR KINDS
-//
-//FULL HOUSE:
-//CHECK THREES FOR HIGHEST SUIT
-//CHECK PAIR FOR HIGHEST SUIT IF THREES SUITS MATCH
-//
-//THREE OF A KIND:
-//CHECK HIGHEST SUIT IN THREES
-//CHECK PAIR NEXT FOR HIGHEST SUIT BASED OFF HIGHEST RANK 
-//
-//TWO PAIR:
-//
-
-
-
-
-
-
-
-
-
-
