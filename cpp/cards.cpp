@@ -64,7 +64,7 @@ void cards::fileHandling(string cardFile) {
 	
 	if(!file.is_open()) {
 		cout << cardFile << " does not exist." << endl;
-		return;
+		exit(EXIT_SUCCESS);
 	}
 
 	getline(file, cardData);
