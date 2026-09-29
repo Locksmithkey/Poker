@@ -1,4 +1,4 @@
-module poker;
+module Cards;
 
 import std.random;
 import std.file;
@@ -6,8 +6,9 @@ import std.string;
 import std.stdio;
 import std.algorithm;
 import std.container.array;
+import core.stdc.stdlib : exit;
 
-class cards {
+class Cards {
 
 	string[] deck, hand;
 	string[][] ds, combos;
@@ -19,7 +20,7 @@ class cards {
 
 	this() {rand = Random(unpredictableSeed);}
 
-	this(string cardFile) {}
+	this(string cardFile) {fileHandling(cardFile);}
 
 	void  shuffle() {
 	
@@ -30,6 +31,7 @@ class cards {
 		}
 
 		deck.randomShuffle(rand);
+		printHand(deck);
 	}
 
 	void chooseHand() {
@@ -40,7 +42,29 @@ class cards {
 		printHand(hand);
 	}
 
-	void fileHandling(string cardFile) {}
+	void fileHandling(string cardFile) {
+
+		if(!exists(cardFile)) {
+			writefln("%3s does not exist.\n", cardFile);
+			exit(1);
+		}
+
+		File file = File(cardFile, "r");
+
+		string cardData = strip(file.readln());
+
+		hand = cardData.split(", ");
+
+		foreach(c ; hand) {
+			if(count(hand, c) > 1) {
+				writefln("*** File: %s", cardFile);
+				printHand();
+				writeln("\n*** ERROR - DUPLICATED CARD FOUND IN DECK ***\n");
+				writefln("*** DUPLICATE %s ***\n", c);
+				exit(1);
+			}
+		}
+	}
 
 	void handCombinations() {
 
@@ -67,9 +91,7 @@ class cards {
 				printHands(d);
 				writeln();
 			}
-
 		}
-	
 	}
 
 	void handScore() {
@@ -80,9 +102,8 @@ class cards {
 			printHands(combos[i]);
 			printHands(ds[i]);
 
-			writefln(" - %s", scoring(combos[i]));
-		}
-	
+			writefln("- %s", scoring(combos[i]));
+		}	
 		writeln();
 	}
 
@@ -114,12 +135,18 @@ class cards {
 		}
 
 		val.sort!((a,b) => a < b);
+		bool aceLow = val == [1, 2, 3, 4, 13]; 
+
+		if(aceLow) {
+			straight = true;
+		}
+		else {
 
 		for(int i = 0; i < val.length - 1; i++) {
 			if(val[i + 1] != val[i] + 1) {
 				straight = false; break;
 			}
-		}
+		}}
 
 		for(int i = 2; i <= scores.length - 1; i++) {
 			if(scores[i] == 2) pairs++;
@@ -127,7 +154,7 @@ class cards {
 			else if(scores[i] == 4) fok = true;
 		}
 
-		if(val[0] == 10) high = true;
+		if(val[0] == 9) high = true;
 
 		if(high && straight && flush) return "Royal Straight Flush";
 		if(straight && flush) return "Straight Flush";
@@ -145,7 +172,6 @@ class cards {
 	void sortHand(ref string[] h) {
 		
 		h.sort!((a, b) => rankCard(a) < rankCard(b)); 
-
 	}
 
 	int rankCard(string c) {
@@ -159,25 +185,25 @@ class cards {
 
 	int cardSuit(string c) {
 
-		string suit = c[$-1..$];
-
 		for(int i = 0; i < s.length; i++)
-			if(suit == s[i]) return i;
+			if(c[$-1..$] == s[i]) return i;
 		return -1;
 	}
 
-	void printHand(string[] h) {
+	void printHand(string[] h = null) {
 		
+		if(h is null) h = hand;
+
 		foreach(string card ; h) 
-			writefln("%3s ", card);
+			writef("%3s ", card);
+		writeln();
 	}
 
 	void printHands(string[] h) {
 
 		for(int i = 0; i < h.length; i++) {
-			writefln("%3s", h[i]);
+			writef("%3s", h[i]);
 			write(i == 4 ? " | " : " ");
 		}
-		writeln();
 	}
 }
