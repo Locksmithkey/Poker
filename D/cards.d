@@ -135,15 +135,15 @@ class Cards {
 		}
 
 		val.sort!((a,b) => a < b);
-		bool aceLow = val == [1, 2, 3, 4, 13]; 
+		bool aceLow = val == [2, 3, 4, 5, 14]; 
 
 		if(aceLow) {
 			straight = true;
 		}
 		else {
 
-		for(int i = 0; i < val.length - 1; i++) {
-			if(val[i + 1] != val[i] + 1) {
+		for(int i = 1; i < val.length; i++) {
+			if(val[i] != val[i - 1] + 1) {
 				straight = false; break;
 			}
 		}}
@@ -154,7 +154,7 @@ class Cards {
 			else if(scores[i] == 4) fok = true;
 		}
 
-		if(val[0] == 9) high = true;
+		if(val[0] == 10) high = true;
 
 		if(high && straight && flush) return "Royal Straight Flush";
 		if(straight && flush) return "Straight Flush";
@@ -175,11 +175,11 @@ class Cards {
 	}
 
 	int rankCard(string c) {
-
-		string rank = c[0..2] == "10" ? "10" : c[0..1];
-		
+	
+		string rank = c.length == 3 ? "10" : c[0..1];
+	
 		for(int i = 0; i < r.length; i++)
-			if(rank == r[i]) return i + 1;
+			if(rank == r[i]) return i + 2;
 		return -1;
 	}
 
