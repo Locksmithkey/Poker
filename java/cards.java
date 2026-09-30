@@ -96,7 +96,7 @@ public class cards {
 
 	private void sortHand(ArrayList<String> h) {
  
-		Collections.sort(h);	
+		Collections.sort(h, (a, b) -> Integer.compare(rankCard(a), rankCard(b)));	
 	}
 
 	private void fileHandling(String cardFile) {
@@ -112,12 +112,12 @@ public class cards {
 		try(Scanner s = new Scanner(file).useDelimiter(",")) {	
 			while(s.hasNext()) {
 				hand.add(s.next().trim());
-				System.out.printf("%3s ", hand.get(hand.size() - 1));
 			}
 
 			for(final String c : hand) {
-			
 				if(Collections.frequency(hand, c) > 1) {
+					System.out.printf("\n*** File: %s%n", cardFile); 
+					printHand(hand);
 					System.out.printf("%n*** DUPLICATED CARD FOUND IN DECK ***%n");
 					System.out.printf("*** DUPLICATE: %3s ***%n", c);
 					System.exit(0);
@@ -139,8 +139,8 @@ public class cards {
 		boolean high = false;
 		boolean fok = false;
 		boolean tok = false;
-		boolean flush = false;
-		boolean straight = false;
+		boolean flush = true;
+		boolean straight = true;
 	
 		int[] scores = new int[15];
 		Arrays.fill(scores, 0);
@@ -153,9 +153,6 @@ public class cards {
 			scores[cr]++;
 			val.add(cr);
 		}
-
-
-		//Checks for flush
 		
 		char firstSuit = h.get(0).charAt(h.get(0).length() - 1);
 
@@ -171,13 +168,12 @@ public class cards {
 		if(low) {straight = true;}
 			
 		else {
-		for(int i = 1; i < h.size(); i++) {
+		for(int i = 1; i < val.size(); i++) {
 
 			if(val.get(i) != val.get(i - 1) + 1) {
 				straight = false; break;
 			}
 		}}
-
 
 		for(int i = 2; i <= 14; i++) {
 
@@ -187,10 +183,10 @@ public class cards {
 		}
 
 
-		boolean royal = val.equals(new ArrayList<>(Arrays.asList(10, 11, 12, 13, 14)));
+		if(val.get(0) == 10) {high = true;}
 
 
-		if(royal && flush) {return "Royal Straight Flush";}
+		if(high && straight && flush) {return "Royal Straight Flush";}
 		if(straight && flush) {return "Straight Flush";}
 		if(fok) {return "Four of a Kind";}
 		if(tok && pairs == 1) {return "Full House";}
@@ -227,7 +223,7 @@ public class cards {
 		return -1;
 	}
 
-	public void printHands(ArrayList<String> h) {
+	private void printHands(ArrayList<String> h) {
 
 		for(int i = 0; i < h.size(); i++) { 
 			System.out.printf("%3s", h.get(i) + (i == 4 ? " | " : " "));

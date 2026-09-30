@@ -9,9 +9,9 @@ public class poker {
 		System.out.println("\n*** P O K E R  H A N D  A N A L Y Z E R***\n");
 
 		if(args.length > 0) {
-			System.out.printf("%n*** USING TEST DECK ***%n%n*** File : %s%n", args[0]);
-		
-			poker = new cards(args[0]);			
+			
+			poker = new cards(args[0]);
+			System.out.printf("%n*** USING TEST DECK ***%n%n*** File : %s%n", args[0]);			
 		}
 		else {
 
