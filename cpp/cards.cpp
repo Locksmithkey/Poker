@@ -1,4 +1,5 @@
 #include <string>
+#include <iomanip>
 #include <algorithm>
 #include <vector>
 #include <iostream>
@@ -35,10 +36,7 @@ void cards::shuffle(){
 		}
 	}
 	
-	for(const auto& card : deck) {
-		cout << card << " ";
-	}
-	cout << endl << endl;
+	printHand(deck);
 }
 
 void cards::chooseHand() {
@@ -69,9 +67,6 @@ void cards::fileHandling(string cardFile) {
 
 	getline(file, cardData);
 
-	cout << cardData << endl;
-	cout << endl;
-
 	for(char c : cardData) {
 		if(c == ',') {
 			hand.push_back(card);
@@ -83,7 +78,16 @@ void cards::fileHandling(string cardFile) {
 		
 	if(!card.empty()) hand.push_back(card);
 
-	
+	for(const string &card : hand) {
+		int freq = count(hand.begin(), hand.end(), card);
+
+		if(freq > 1) {
+			printHand(hand);
+			cout << "*** ERROR - DUPLICATED CARD FOUND IN DECK ***" << endl;
+			cout << "\n*** DUPLICATE: " << card << " ***\n" << endl;
+			exit(EXIT_SUCCESS);
+		}
+	}
 	file.close();
 } 
 
@@ -105,8 +109,8 @@ void cards::handCombinations() {
 			ds.push_back(d);
 
 			combos.push_back(handCombo);
-			printHand(handCombo);
-			printHand(d);
+			printHands(handCombo);
+			printHands(d);
 			cout << endl;
 			
         	}
@@ -120,9 +124,9 @@ void cards::handScore() {
 	for(int i = 0; i < combos.size(); i++) {
 		sortHand(combos[i]);
 		sortHand(ds[i]);
-		printHand(combos[i]);
-		printHand(ds[i]);
-		cout << " -- " << scoring(combos[i]);
+		printHands(combos[i]);
+		printHands(ds[i]);
+		cout << " - " << scoring(combos[i]);
 		cout << endl;	
 	}
 	cout << endl;
@@ -203,7 +207,7 @@ int cards::rankCard(string c) {
 	c.substr(0, 2) == "10" ? rank = "10" : rank = c.substr(0, 1);
 
 	for(int i = 0; i < 13; i++) 
-		if(rank == r[i]) return i + 1;
+		if(rank == r[i]) return i + 2;
 
 	return -1;
 
@@ -219,15 +223,15 @@ int cards::cardSuit(string c) {
 	return -1;
 
 }
-void cards::printHand() {
-	for(int i = 0; i < hand.size(); i++)
-		i == 4 ? cout << hand.at(i) << " | " : cout << hand.at(i) << " ";
+void cards::printHand(vector<string> h) {
 
+	for(const string & c : h)
+		cout << setw(3) << c << " ";		
 	cout << endl; 
 }
 
 	
-void cards::printHand(vector<string> h) {
+void cards::printHands(vector<string> h) {
 	
 	for(int i = 0; i < h.size(); i++) 
 		i == 4 ? cout << h.at(i) << " | " : cout << h.at(i) << " ";

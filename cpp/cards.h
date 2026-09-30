@@ -18,6 +18,6 @@ public:
 	int rankCard(string c);
 	int cardSuit(string c);
 	string scoring(vector<string> h);
-	void printHand();
 	void printHand(vector<string> h);
+	void printHands(vector<string> h);
 };
