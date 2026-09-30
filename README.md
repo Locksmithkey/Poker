@@ -43,3 +43,10 @@ Compiling: msc poker.cs cards.cs // Or mcs *.cs if only files in directory
 Randomized Sort: mono poker.exe
 
 Using File: mono poker.exe ../testDecks/{hand} // Or custom file
+
+Note: For a clean rebuild of the .exe file run:
+
+rm -f *.exe
+mcs -out:poker.exe poker.cs poker.cs
+mono poker.exe
+
