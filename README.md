@@ -1,3 +1,4 @@
+!!!Must have the associated compiler installed, or a compatible version!!!
 A set of test hands are also provided in the "testDecks" folder for testing
 
 hands: dup RSF SF FOK fullHouse flush STR TOK twoPair pair highCard
